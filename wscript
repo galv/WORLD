@@ -69,9 +69,9 @@ def build(bld):
         ls = ls + ' -l' + l
 
     bld(source='world.pc.in',
-        prefix=bld.env['PREFIX'],
+        prefix='/Users/danielgalvez/Desktop/Fall2015/research/vcc2016/code/WORLD',
         exec_prefix='${prefix}',
-        libdir=bld.env['LIBDIR'],
+        libdir='${prefix}/lib',
         libs=ls,
         includedir='${prefix}/include',
         PACKAGE=APPNAME,
