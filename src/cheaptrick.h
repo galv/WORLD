@@ -36,6 +36,11 @@ typedef struct {
 DLLEXPORT void CheapTrick(double *x, int x_length, int fs, double *time_axis,
   double *f0, int f0_length, CheapTrickOption *option, double **spectrogram);
 
+DLLEXPORT void FlatCheapTrick(double *x, int x_length, int fs, double *time_axis,
+                              double *f0, int f0_length, CheapTrickOption *option,
+                              double *spectrogram_t7_buffer);
+
+
 //-----------------------------------------------------------------------------
 // InitializeCheapTrickOption allocates the memory to the struct and sets the
 // default parameters.

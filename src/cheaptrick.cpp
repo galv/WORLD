@@ -7,6 +7,8 @@
 #include "./cheaptrick.h"
 
 #include <math.h>
+#include "cstdlib"
+#include <cstdio>
 
 #include "./common.h"
 #include "./constantnumbers.h"
@@ -207,4 +209,34 @@ DLLEXPORT void InitializeCheapTrickOption(CheapTrickOption *option) {
   // q1 is the parameter used for the spectral recovery.
   // Since The parameter is optimized, you don't need to change the parameter.
   option->q1 = -0.09;
+}
+
+DLLEXPORT void FlatCheapTrick(double *x, int x_length, int fs, double *time_axis,
+                              double *f0, int f0_length, CheapTrickOption *option,
+                              double *spectrogram_t7_buffer) {
+    int fftFreqSize = GetFFTSizeForCheapTrick(fs);
+    int fftTimeSize = f0_length;
+    double **spectrogram = (double**) malloc(f0_length * sizeof(double *));
+
+    printf("Copying to array.\n");
+    for(int time = 0; time < fftTimeSize; time++) {
+        for(int freq = 0; freq < fftFreqSize; freq++) {
+            spectrogram[time][freq] = spectrogram_t7_buffer[time * fftFreqSize + freq];
+        }
+    }
+
+    printf("Computing.\n");
+    CheapTrick(x, x_length, fs, time_axis, f0, f0_length, option, spectrogram);
+
+    printf("Copying out of array.\n");
+    for(int time = 0; time < fftTimeSize; time++) {
+        for(int freq = 0; freq < fftFreqSize; freq++) {
+            spectrogram_t7_buffer[time * fftFreqSize + freq] = spectrogram[time][freq];
+        }
+    }
+
+    for(int time = 0; time < fftTimeSize; time++) {
+        free(spectrogram[time]);
+    }
+    free(spectrogram);
 }
