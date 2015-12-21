@@ -9,6 +9,6 @@ fi
 
 mkdir -p ground_truth
 cd ground_truth
-../build/example/test ../example/test16k.wav
+../build/example/test ../example/test16k.wav ./resynthesized_test16k.wav
 
 echo "Finished"

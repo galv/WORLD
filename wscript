@@ -69,10 +69,13 @@ def build(bld):
         ls = ls + ' -l' + l
 
     bld(source='world.pc.in',
-        prefix='/Users/danielgalvez/Desktop/Fall2015/research/vcc2016/code/WORLD',
+        prefix='.',
         exec_prefix='${prefix}',
-        libdir='${prefix}/lib',
+        libdir='${prefix}/src',
         libs=ls,
         includedir='${prefix}/include',
         PACKAGE=APPNAME,
         VERSION=VERSION)
+
+
+    #os.system('ln -s ${prefix}/src/libworld.dylib ${prefix}/lib/libworld.0.dylib')

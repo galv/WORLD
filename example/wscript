@@ -6,4 +6,4 @@ def build(bld):
         source = 'test.cpp',
         target = 'test',
         use = ['world'],
-        includes = ['../src'])
+        includes = ['../src', '/Users/danielgalvez/Desktop/Fall2015/research/vcc2016/code/WORLD/build/src/'])

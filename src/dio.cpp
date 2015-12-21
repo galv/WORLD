@@ -630,16 +630,17 @@ void DioGeneralBody(double *x, int x_length, int fs, double frame_period,
 
 }  // namespace
 
-DLLEXPORT int GetSamplesForDIO(int fs, int x_length, double frame_period) {
-  return static_cast<int>(x_length / static_cast<double>(fs) /
-    (frame_period / 1000.0)) + 1;
+DLLEXPORT int GetSamplesForDIO(int fs, int x_length_samples, double frame_period) {
+    double frame_period_in_seconds = frame_period / 1000.0;
+    double total_num_seconds = x_length_samples / static_cast<double>(fs);
+    return static_cast<int>(total_num_seconds / frame_period_in_seconds) + 1;
 }
 
 DLLEXPORT void Dio(double *x, int x_length, int fs, const DioOption option,
     double *time_axis, double *f0) {
-  DioGeneralBody(x, x_length, fs, option.frame_period, option.f0_floor,
-      option.f0_ceil, option.channels_in_octave, option.speed,
-      option.allowed_range, time_axis, f0);
+    DioGeneralBody(x, x_length, fs, option.frame_period, option.f0_floor,
+                   option.f0_ceil, option.channels_in_octave, option.speed,
+                   option.allowed_range, time_axis, f0);
 }
 
 DLLEXPORT void DioByOptPtr(double *x, int x_length, int fs, const DioOption* option,

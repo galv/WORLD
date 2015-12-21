@@ -214,11 +214,10 @@ DLLEXPORT void InitializeCheapTrickOption(CheapTrickOption *option) {
 DLLEXPORT void FlatCheapTrick(double *x, int x_length, int fs, double *time_axis,
                               double *f0, int f0_length, CheapTrickOption *option,
                               double *spectrogram_t7_buffer) {
-    int fftFreqSize = GetFFTSizeForCheapTrick(fs);
+    int fftFreqSize = GetFFTSizeForCheapTrick(fs) / 2 + 1;
     int fftTimeSize = f0_length;
     double **spectrogram = (double**) malloc(fftTimeSize * sizeof(double *));
 
-    printf("Copying to array.\n");
     for(int time = 0; time < fftTimeSize; time++) {
         spectrogram[time] = (double*) malloc(fftFreqSize * sizeof(double));
         for(int freq = 0; freq < fftFreqSize; freq++) {
@@ -226,10 +225,8 @@ DLLEXPORT void FlatCheapTrick(double *x, int x_length, int fs, double *time_axis
         }
     }
 
-    printf("Computing.\n");
     CheapTrick(x, x_length, fs, time_axis, f0, f0_length, option, spectrogram);
 
-    printf("Copying out of array.\n");
     for(int time = 0; time < fftTimeSize; time++) {
         for(int freq = 0; freq < fftFreqSize; freq++) {
             spectrogram_t7_buffer[time * fftFreqSize + freq] = spectrogram[time][freq];

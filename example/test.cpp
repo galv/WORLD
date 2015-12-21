@@ -194,7 +194,7 @@ void WaveformSynthesis(double *f0, int f0_length, double **spectrogram,
 
 //-----------------------------------------------------------------------------
 // Test program.
-// test.exe input.wav outout.wav f0 spec flag
+// test.exe input.wav output.wav f0 spec flag
 // input.wav  : argv[1] Input file
 // output.wav : argv[2] Output file
 // f0         : argv[3] F0 scaling (a positive number)
