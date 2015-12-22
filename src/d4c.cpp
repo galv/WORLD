@@ -5,6 +5,7 @@
 // Band-aperiodicity estimation on the basis of the idea of D4C.
 //-----------------------------------------------------------------------------
 #include "./d4c.h"
+#include "./cheaptrick.h"
 
 #include <math.h>
 #include <algorithm>  // for std::sort()
@@ -310,6 +311,22 @@ DLLEXPORT void D4C(double *x, int x_length, int fs, double *time_axis, double *f
   delete[] window;
   delete[] frequency_axis;
 }
+
+DLLEXPORT void FlatD4C(double *x, int x_length, int fs, double *time_axis, double *f0,
+                       int f0_length, int fft_freq_size, D4COption *option,
+                       double *aperiodicity_t7_buffer) {
+    int fft_time_size = f0_length;
+    double **aperiodicity_alias = new double*[fft_time_size];
+    for(int time = 0; time < fft_time_size; time++) {
+        aperiodicity_alias[time] = aperiodicity_t7_buffer + time * fft_freq_size;
+    }
+
+    int fft_size = GetFFTSizeForCheapTrick(fs);
+    D4C(x, x_length, fs, time_axis, f0, f0_length, fft_size, option, aperiodicity_alias);
+
+    delete[] aperiodicity_alias;
+}
+
 
 DLLEXPORT void InitializeD4COption(D4COption *option) {
   // This struct is dummy.

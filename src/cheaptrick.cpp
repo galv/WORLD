@@ -214,27 +214,15 @@ DLLEXPORT void InitializeCheapTrickOption(CheapTrickOption *option) {
 DLLEXPORT void FlatCheapTrick(double *x, int x_length, int fs, double *time_axis,
                               double *f0, int f0_length, CheapTrickOption *option,
                               double *spectrogram_t7_buffer) {
-    int fftFreqSize = GetFFTSizeForCheapTrick(fs) / 2 + 1;
-    int fftTimeSize = f0_length;
-    double **spectrogram = (double**) malloc(fftTimeSize * sizeof(double *));
+    int fft_freq_size = GetFFTSizeForCheapTrick(fs) / 2 + 1;
+    int fft_time_size = f0_length;
+    double **spectrogram_alias = new double*[fft_time_size];
 
-    for(int time = 0; time < fftTimeSize; time++) {
-        spectrogram[time] = (double*) malloc(fftFreqSize * sizeof(double));
-        for(int freq = 0; freq < fftFreqSize; freq++) {
-            spectrogram[time][freq] = spectrogram_t7_buffer[time * fftFreqSize + freq];
-        }
+    for(int time = 0; time < fft_time_size; time++) {
+        spectrogram_alias[time] = spectrogram_t7_buffer + time * fft_freq_size;
     }
 
-    CheapTrick(x, x_length, fs, time_axis, f0, f0_length, option, spectrogram);
+    CheapTrick(x, x_length, fs, time_axis, f0, f0_length, option, spectrogram_alias);
 
-    for(int time = 0; time < fftTimeSize; time++) {
-        for(int freq = 0; freq < fftFreqSize; freq++) {
-            spectrogram_t7_buffer[time * fftFreqSize + freq] = spectrogram[time][freq];
-        }
-    }
-
-    for(int time = 0; time < fftTimeSize; time++) {
-        free(spectrogram[time]);
-    }
-    free(spectrogram);
+    delete[] spectrogram_alias;
 }

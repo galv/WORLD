@@ -35,6 +35,10 @@ typedef struct {
 DLLEXPORT void D4C(double *x, int x_length, int fs, double *time_axis, double *f0,
   int f0_length, int fft_size, D4COption *option, double **aperiodicity);
 
+DLLEXPORT void FlatD4C(double *x, int x_length, int fs, double *time_axis, double *f0,
+                       int f0_length, int fft_size, D4COption *option,
+                       double *aperiodicity_t7_buffer);
+
 //-----------------------------------------------------------------------------
 // InitializeD4COption allocates the memory to the struct and sets the
 // default parameters.

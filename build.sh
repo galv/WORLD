@@ -1,3 +1,4 @@
+#/bin/sh
 # I am NOT proud of this. Only for Mac OS X
 # run from WORLD/ directory.
 
